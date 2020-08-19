@@ -9,7 +9,7 @@
     "test": "jest",
     "lint": "eslint .",
     "link": "react-native link react-native-vector-icons",
-    "build": "react-native bundle — dev false — platform android — entry-file index.js — bundle-output ./android/app/build/intermediates/assets/ debug/ index.android.bundle –assets-dest ./android/app/build /intermediates /res/ merged/debug"
+    "build": "react-native run-android --variant=release"
   },
   "dependencies": {
     "@react-native-community/masked-view": "^0.1.10",
