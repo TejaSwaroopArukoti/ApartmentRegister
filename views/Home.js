@@ -21,12 +21,12 @@ function Home({navigation}) {
             <Button
               title="Add Entry"
               onPress={() => navigation.navigate('AddEntry')}
-              style={styles.button}
+              buttonStyle={styles.btnUI}
             />
              <Button
               title="View Entries"
               onPress={() => navigation.navigate('ViewEntries')}
-              style={styles.button}
+              buttonStyle={styles.btnUI}
             />
           
         </View>
@@ -39,8 +39,8 @@ const styles = StyleSheet.create({
     justifyContent:"center",
     padding:10,
   },
-  button: {
-  
+  btnUI: {
+    marginTop: 10,
   }
 });
 
