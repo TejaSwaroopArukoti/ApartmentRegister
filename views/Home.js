@@ -15,7 +15,24 @@ import {
 
 import AddEntry from './AddEntry';
 import ViewEntries from './ViewEntries';
-function Home({navigation}) {
+function Home({navigation,route}) {
+
+  const [entries, setEntries] = useState([]);
+
+  React.useEffect(() => {
+    if (route.params?.entry) {
+   
+
+     let newEntry = [...entries];
+     if(route && route.params && route.params?.entry){
+      newEntry.push(route.params.entry);
+      setEntries(newEntry);
+     }
+     
+
+    }
+  }, [route.params?.entry]);
+
     return (
         <View style={styles.container}>
             <Button
@@ -25,7 +42,7 @@ function Home({navigation}) {
             />
              <Button
               title="View Entries"
-              onPress={() => navigation.navigate('ViewEntries')}
+              onPress={() => navigation.navigate('ViewEntries',{entries:entries})}
               buttonStyle={styles.btnUI}
             />
           
