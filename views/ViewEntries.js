@@ -38,8 +38,8 @@ function ViewEntries({navigation,route}) {
             return (
               <View key={index} style={styles.item}>
                 <Text>{entry.guestName}</Text>
-                <Text>Logged in Time: {entry.time}</Text>
-                <Text>Logged in Time: {entry.vehicleNum}</Text>
+                <Text>Logged in Time: {entry.entryDate}</Text>
+                <Text>Vehicle Num   : {entry.vehicleNum}</Text>
               </View>
             )
           })

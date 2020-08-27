@@ -8,9 +8,11 @@ import {
   Text,
   StatusBar,
   TextInput,
-  Alert
+  Alert,
+  ToastAndroid
 } from 'react-native';
-import { LogBox } from 'react-native';
+import { LogBox,Platform } from 'react-native';
+import DateTimePicker from '@react-native-community/datetimepicker';
 
 import { Button,
           Input,Header } from 'react-native-elements';
@@ -23,33 +25,36 @@ import moment from 'moment';
 const EntrySchema = yup.object({
   guestName: yup.string().required().min(4),
   vehicleNum: yup.string().required().min(4),
-  flatNum: yup.string().required().min(4),
+  flatNum: yup.string().required().min(1),
+  mobileNum: yup.number().required(),
+  purposeOfVisit: yup.string().required().min(5),
+  entryDate: yup.date(),
+  exitDate: yup.date()
 })
+
+const handleSubmitBtn = (values, navigation) => { 
+  let entryDate = moment()
+  .utcOffset('+05:30')
+  .format('YYYY-MM-DD hh:mm:ss a');
+  let formObj = {...values, entryDate:entryDate } 
+  navigation.navigate('Home',{entry: formObj});
+}
 
 
 function AddEntry({navigation}) {
 
-  const resetForm = () => {
-    let obj = {
-
-    }
-  }
-
     return (
     <View style={styles.container}>
    <Formik
-     initialValues={{ guestName:'', vehicleNum:'', flatNum:'' }}
+     initialValues={{ guestName:'', vehicleNum:'', flatNum:'', mobileNum:'',purposeOfVisit:''}}
      validationSchema={EntrySchema}
-     onSubmit={values => { let newValues = {...values, 
-      time: moment()
-      .utcOffset('+05:30')
-      .format('YYYY-MM-DD hh:mm:ss a')}; console.log(newValues); navigation.navigate('Home',{entry: newValues})}}
+     onSubmit={values => handleSubmitBtn(values, navigation)}
    >
      {({ handleChange, handleBlur, handleSubmit, values, touched, errors }) => (
        <View>
  
           <Input 
-            placeholder="Enter guest name"
+            placeholder="Guest name"
             value={values.guestName}
             onChangeText={handleChange('guestName')}
             onBlur={handleBlur('guestName')}
@@ -58,7 +63,25 @@ function AddEntry({navigation}) {
           <Text style={styles.errorText}> {touched.guestName && errors.guestName} </Text>
 
           <Input 
-            placeholder="Enter vehicle number "
+            placeholder="Mobile number"
+            value={values.mobileNum}
+            onChangeText={handleChange('mobileNum')}
+            onBlur={handleBlur('mobileNum')}
+            />
+
+          <Text style={styles.errorText}> {touched.mobileNum && errors.mobileNum} </Text>
+
+          <Input 
+            placeholder="Flat num"
+            value={values.flatNum}
+            onChangeText={handleChange('flatNum')}
+            onBlur={handleBlur('flatNum')}
+              />
+
+          <Text style={styles.errorText}> {touched.flatNum && errors.flatNum} </Text>
+
+          <Input 
+            placeholder="Vehicle number "
             value={values.vehicleNum}
             onChangeText={handleChange('vehicleNum')}
             onBlur={handleBlur('vehicleNum')}
@@ -66,14 +89,15 @@ function AddEntry({navigation}) {
 
           <Text style={styles.errorText}> {touched.vehicleNum && errors.vehicleNum} </Text>
 
-          <Input 
-            placeholder="Enter flat num"
-            value={values.flatNum}
-            onChangeText={handleChange('flatNum')}
-            onBlur={handleBlur('flatNum')}
-              />
 
-          <Text style={styles.errorText}> {touched.flatNum && errors.flatNum} </Text>
+          <Input 
+            placeholder="Purpose of visit "
+            value={values.purposeOfVisit}
+            onChangeText={handleChange('purposeOfVisit')}
+            onBlur={handleBlur('purposeOfVisit')}
+            />
+
+          <Text style={styles.errorText}> {touched.purposeOfVisit && errors.purposeOfVisit} </Text>
 
           <Button onPress={handleSubmit} title="Submit" />
        </View>
