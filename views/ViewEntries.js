@@ -8,7 +8,7 @@ import {
   Text,
   StatusBar
 } from 'react-native';
-
+import {useSelector, useDispatch} from 'react-redux';
 import {
 
   LearnMoreLinks,
@@ -20,16 +20,25 @@ import {
 import { Button,
           Input,Header } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import { deleteEntry } from './actions/entry';
 
 function ViewEntries({navigation,route}) {
 
-  const [viewEntries, setViewEntries] = useState([]);
+ const dispatch = useDispatch();
 
-  React.useEffect(() => {
-    if (route.params?.entries) {
-      setViewEntries(route.params.entries);
-    }
-  }, [route.params?.entries]);
+  const viewEntries = useSelector(state => state.entry.entries);
+
+  const handleEdit = (key) => {
+
+    navigation.navigate("AddEntry",{mode:"EDIT", index: key, entry: viewEntries[key]});
+
+  }
+
+  const handleDelete = (key) => {
+
+    dispatch(deleteEntry(key));
+
+  }
 
     return (
     <View>
@@ -40,6 +49,8 @@ function ViewEntries({navigation,route}) {
                 <Text>{entry.guestName}</Text>
                 <Text>Logged in Time: {entry.entryDate}</Text>
                 <Text>Vehicle Num   : {entry.vehicleNum}</Text>
+                <Button title="Edit" onPress={()=>{handleEdit(index)}}/>
+                <Button title="Delete" onPress={()=>{handleDelete(index)}}/>
               </View>
             )
           })

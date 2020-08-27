@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   SafeAreaView,
   StyleSheet,
@@ -11,8 +11,11 @@ import {
   Alert,
   ToastAndroid
 } from 'react-native';
+import {createEntry, editEntry} from './actions/entry';
 import { LogBox,Platform } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
+
+import {useSelector, useDispatch} from 'react-redux';
 
 import { Button,
           Input,Header } from 'react-native-elements';
@@ -32,22 +35,54 @@ const EntrySchema = yup.object({
   exitDate: yup.date()
 })
 
-const handleSubmitBtn = (values, navigation) => { 
-  let entryDate = moment()
-  .utcOffset('+05:30')
-  .format('YYYY-MM-DD hh:mm:ss a');
-  let formObj = {...values, entryDate:entryDate } 
-  navigation.navigate('Home',{entry: formObj});
-}
 
 
-function AddEntry({navigation}) {
+function AddEntry({navigation, route}) {
+
+  const dispatch = useDispatch();
+
+  const handleSubmitBtn = (values, navigation) => { 
+   console.log('button clicked')
+    if( mode === "EDIT") {
+      console.log(index);
+      dispatch(editEntry(values, index));
+      navigation.navigate('Home');
+
+    } else {
+
+      let entryDate = moment()
+      .utcOffset('+05:30')
+      .format('YYYY-MM-DD hh:mm:ss a');
+      //let formObj = {...values, entryDate:entryDate } 
+      dispatch(createEntry(values));
+      navigation.navigate('Home');
+
+    }
+    
+  }
+  const [mode,setMode] = useState("");
+  const [initialEntries, setInitialEntries] = useState({ guestName:'', vehicleNum:'', flatNum:'', mobileNum:'',purposeOfVisit:''});
+  const [index, setIndex] = useState(-1);
+  React.useEffect(() => {
+    if (route.params.mode) {
+      setMode(route.params.mode);
+      if(route.params.mode==="EDIT"){
+        console.log(" in edit mode");
+        console.log(route.params);
+        setIndex(route.params.index);
+        setInitialEntries(route.params.entry);
+        
+      }
+    }
+  }, [route.params.mode]);
+
 
     return (
     <View style={styles.container}>
    <Formik
-     initialValues={{ guestName:'', vehicleNum:'', flatNum:'', mobileNum:'',purposeOfVisit:''}}
+     initialValues={initialEntries}
      validationSchema={EntrySchema}
+     enableReinitialize={true}
      onSubmit={values => handleSubmitBtn(values, navigation)}
    >
      {({ handleChange, handleBlur, handleSubmit, values, touched, errors }) => (
