@@ -64,13 +64,26 @@ export const viewEntriesFailure = (error) => (
    }
 );
 
-export const editEntry = (entry, index) => (
+export const editEntryRequest = () => (
    {
-      type: EDIT_ENTRY,
-      data: entry,
-      key: index
+      type: EDIT_ENTRY_REQUEST,
    }
 );
+
+export const editEntrySuccess = () => (
+   {
+      type: EDIT_ENTRY_SUCCESS,
+   }
+);
+
+
+export const editEntryFailure = (error) => (
+   {
+      type: EDIT_ENTRY_FAILURE,
+      error: error
+   }
+);
+
 
 
 export const deleteEntryReqest = () => (
@@ -94,8 +107,7 @@ export const deleteEntryFailure = (error) => (
 
 export const createEntry = (entry) => {
    return async (dispatch) => {
-      console.log('I AM HERE');
-      console.log(dispatch);
+   
       dispatch(createEntryRequest());
       try {
 
@@ -108,6 +120,24 @@ export const createEntry = (entry) => {
       } catch (e) {
 
          dispatch(createEntryFailure(e.message));
+
+      }
+   }
+}
+
+export const editEntry = (entry) => {
+   return async (dispatch) => {
+     
+      dispatch(editEntryRequest());
+      try {
+
+         let generatedId = entry.id;
+         await AsyncStorage.mergeItem(generatedId, JSON.stringify(entry))
+         dispatch(editEntrySuccess());
+
+      } catch (e) {
+
+         dispatch(editEntryFailure(e.message));
 
       }
    }

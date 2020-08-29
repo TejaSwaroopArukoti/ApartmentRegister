@@ -7,7 +7,9 @@ import {CREATE_ENTRY_REQUEST,
         DELETE_ENTRY_REQUEST,
         DELETE_ENTRY_SUCCESS,
         DELETE_ENTRY_FAILURE,
-        EDIT_ENTRY
+        EDIT_ENTRY_REQUEST,
+        EDIT_ENTRY_SUCCESS,
+        EDIT_ENTRY_FAILURE
         } from '../actions/types';
 
 import AsyncStorage from '@react-native-community/async-storage';
@@ -62,18 +64,14 @@ export const entryReducer = (state = initialState, action ) => {
             }   
 
         
-        case EDIT_ENTRY: 
-            updatedEntries = state.entries.map( (entry,index)=>{
-                if(index === action.key) {
-                    return action.data;
-                }else{
-                    return entry;
-                }
-            });
-        
-            return {...state,
-            entries: updatedEntries
-            }
+        case EDIT_ENTRY_REQUEST: 
+             return {...state, loading: true};
+
+        case EDIT_ENTRY_SUCCESS: 
+            return {...state, loading: false};
+
+        case EDIT_ENTRY_FAILURE: 
+            return {...state, loading: false};
 
         case DELETE_ENTRY_REQUEST: 
             return {...state, loading: true};

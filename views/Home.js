@@ -1,9 +1,8 @@
 
 import React, { useState, useEffect } from 'react';
 import {useSelector, useDispatch} from 'react-redux';
-import {  Button } from 'react-native-elements';
+import {  Button, Icon } from 'react-native-elements';
 import { FAB } from 'react-native-paper';
-
 import {viewEntries, deleteEntry} from './actions/entry';
 
 import {
@@ -14,6 +13,7 @@ import {
   StatusBar,
   TouchableHighlight
 } from 'react-native';
+
 
 function Home({navigation,route}) {
 
@@ -26,8 +26,9 @@ function Home({navigation,route}) {
   const dispatch = useDispatch();
 
   const handleEdit = (key) => {
-
-    navigation.navigate("AddEntry",{mode:"EDIT", index: key, entry: viewEntriesData[key]});
+    
+    let entry = viewEntriesData.filter((entry)=>entry.id === key);
+    navigation.navigate("AddEntry",{mode:"EDIT", entry: entry});
 
   }
 
@@ -44,11 +45,21 @@ function Home({navigation,route}) {
               viewEntriesData.map((entry,index)=>{
                 return (
                   <View key={entry.id} style={styles.item}>
-                    <Text>{entry.guestName}</Text>
-                    <Text>Logged in Time: {entry.entryDate}</Text>
-                    <Text>Vehicle Num   : {entry.vehicleNum}</Text>
-                    <Button title="Edit" onPress={()=>{handleEdit(entry.id)}}/>
-                    <Button title="Delete" onPress={()=>{handleDelete(entry.id)}}/>
+                    <Text style={styles.itemName}>{entry.guestName.toUpperCase()}</Text>
+                    <Icon
+                      raised
+                      name='edit'
+                      type='material'
+                      color='#517fa4'
+                      onPress={()=>{handleEdit(entry.id)}}
+                    />
+                     <Icon
+                      raised
+                      name='delete'
+                      type='material'
+                      color='#517fa4'
+                      onPress={()=>{handleDelete(entry.id)}}
+                    />
                   </View>
                 )
               })
@@ -74,6 +85,7 @@ const styles = StyleSheet.create({
     flex:1,
     justifyContent:"center",
     padding:10,
+    backgroundColor:'#BBB8B2'
   },
   btnUI: {
     marginTop: 10,
@@ -95,8 +107,16 @@ const styles = StyleSheet.create({
   item: {
     marginTop: 24,
     padding:30,
-    backgroundColor:'pink'
+    backgroundColor:'#BC5D2E',
+    flexDirection:'row',
+    alignItems: 'center'
   },
+  itemName: {
+    fontSize:30,
+    fontWeight:'500',
+    color:'#FFFBFA',
+    flexGrow:1
+  }
 });
 
 export default Home

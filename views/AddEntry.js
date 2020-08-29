@@ -42,10 +42,11 @@ function AddEntry({navigation, route}) {
   const dispatch = useDispatch();
 
   const handleSubmitBtn = (values, navigation) => { 
-   console.log('button clicked')
+    console.log('mode')
+   console.log('button clicked');
     if( mode === "EDIT") {
-      console.log(index);
-      //dispatch(editEntry(values, index));
+       let fullObj = {...values, entryDate: otherValues.entryDate, id: otherValues.id};
+      dispatch(editEntry(fullObj));
       navigation.navigate('Home');
 
     } else {
@@ -62,16 +63,16 @@ function AddEntry({navigation, route}) {
   }
   const [mode,setMode] = useState("");
   const [initialEntries, setInitialEntries] = useState({ guestName:'', vehicleNum:'', flatNum:'', mobileNum:'',purposeOfVisit:''});
-  const [index, setIndex] = useState(-1);
+  const [otherValues, setOtherValues] = useState({});
   React.useEffect(() => {
     if (route.params.mode) {
       setMode(route.params.mode);
-      if(route.params.mode==="EDIT"){
-        console.log(" in edit mode");
-        console.log(route.params);
-        setIndex(route.params.index);
-        setInitialEntries(route.params.entry);
-        
+      if(route.params.mode==="EDIT"){ 
+        let newEntry = route.params.entry[0];
+        let selectedEntry = {guestName: newEntry.guestName, vehicleNum: newEntry.vehicleNum, flatNum: newEntry.flatNum, 
+                            mobileNum: newEntry.mobileNum, purposeOfVisit: newEntry.purposeOfVisit};
+        setInitialEntries(selectedEntry);
+        setOtherValues({id: newEntry.id, entryDate: newEntry.entryDate});
       }
     }
   }, [route.params.mode]);
