@@ -11,7 +11,7 @@ import {
   Alert,
   ToastAndroid
 } from 'react-native';
-import {createEntry, editEntry} from './actions/entry';
+import {createEntry, editEntry,viewEntries} from './actions/entry';
 import { LogBox,Platform } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 
@@ -41,12 +41,13 @@ function AddEntry({navigation, route}) {
 
   const dispatch = useDispatch();
 
-  const handleSubmitBtn = (values, navigation) => { 
+  const handleSubmitBtn = async (values, navigation) => { 
     console.log('mode')
    console.log('button clicked');
     if( mode === "EDIT") {
        let fullObj = {...values, entryDate: otherValues.entryDate, id: otherValues.id};
-      dispatch(editEntry(fullObj));
+      await dispatch(editEntry(fullObj));
+      dispatch(viewEntries());
       navigation.navigate('Home');
 
     } else {
@@ -55,7 +56,8 @@ function AddEntry({navigation, route}) {
       .utcOffset('+05:30')
       .format('YYYY-MM-DD hh:mm:ss a');
       let formObj = {...values, entryDate:entryDate } 
-      dispatch(createEntry(formObj));
+      await dispatch(createEntry(formObj));
+      dispatch(viewEntries());
       navigation.navigate('Home');
 
     }

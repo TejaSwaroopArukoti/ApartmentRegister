@@ -26,15 +26,16 @@ function Home({navigation,route}) {
   const dispatch = useDispatch();
 
   const handleEdit = (key) => {
-    
+
     let entry = viewEntriesData.filter((entry)=>entry.id === key);
     navigation.navigate("AddEntry",{mode:"EDIT", entry: entry});
 
   }
 
-  const handleDelete = (key) => {
+  const handleDelete = async (key) => {
     console.log('key is ',key)
-    dispatch(deleteEntry(key));
+    await dispatch(deleteEntry(key));
+    dispatch(viewEntries());
   }
 
     return (
