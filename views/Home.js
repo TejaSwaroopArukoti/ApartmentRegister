@@ -72,11 +72,7 @@ function Home({navigation,route}) {
             large
             icon="plus"
             onPress={() => navigation.navigate('AddEntry',{mode:"CREATE"})}/>
-              <FAB
-            style={styles.viewFab}
-            large
-            icon="plus"
-            onPress={() => dispatch(viewEntries())}/>
+           
         </View>
     )
 }
