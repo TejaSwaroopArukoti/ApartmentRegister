@@ -45,7 +45,7 @@ function AddEntry({navigation, route}) {
    console.log('button clicked')
     if( mode === "EDIT") {
       console.log(index);
-      dispatch(editEntry(values, index));
+      //dispatch(editEntry(values, index));
       navigation.navigate('Home');
 
     } else {
@@ -53,8 +53,8 @@ function AddEntry({navigation, route}) {
       let entryDate = moment()
       .utcOffset('+05:30')
       .format('YYYY-MM-DD hh:mm:ss a');
-      //let formObj = {...values, entryDate:entryDate } 
-      dispatch(createEntry(values));
+      let formObj = {...values, entryDate:entryDate } 
+      dispatch(createEntry(formObj));
       navigation.navigate('Home');
 
     }
