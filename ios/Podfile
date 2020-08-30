@@ -10,6 +10,8 @@ target 'ApartmentRegister' do
 
   pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
 
+  pod 'RNReactNativePdfLib', :path => '../node_modules/react-native-pdf-lib'
+
   target 'ApartmentRegisterTests' do
     inherit! :complete
     # Pods for testing

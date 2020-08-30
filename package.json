@@ -9,7 +9,15 @@
     "test": "jest",
     "lint": "eslint .",
     "link": "react-native link react-native-vector-icons",
-    "build": "react-native run-android --variant=release"
+    "build": "react-native run-android --variant=release",
+    "link1":"react-native link react-native-pdf-lib",
+    "link2":"react-native link",
+    "buildandroid":"npx react-native run-android --variant=release"
+  },
+  "rnpm": {
+    "assets": [
+      "./assets/fonts"
+    ]
   },
   "dependencies": {
     "@react-native-community/async-storage": "github:react-native-community/async-storage",
@@ -28,9 +36,11 @@
     "react-native-gesture-handler": "^1.7.0",
     "react-native-modal-datetime-picker": "^8.9.3",
     "react-native-paper": "^4.0.1",
+    "react-native-pdf-lib": "^1.0.0",
     "react-native-reanimated": "^1.13.0",
     "react-native-safe-area-context": "^3.1.4",
     "react-native-screens": "^2.10.1",
+    "react-native-share": "^3.7.0",
     "react-native-vector-icons": "^7.0.0",
     "react-navigation-stack": "^2.8.2",
     "react-redux": "^7.2.1",
